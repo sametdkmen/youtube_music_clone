@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.youtube_music_app">
    <application
-        android:label="youtube_music_app"
+        android:label="YT Music by SD"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

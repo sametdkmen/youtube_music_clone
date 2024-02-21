@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_music_app/core/constant/color_constant.dart';
 import 'package:youtube_music_app/core/extension/context_extension.dart';
 
 import '../model/song.dart';
 
 class QuickPickSongCard extends StatelessWidget {
   final Song model;
+  final void Function()? onpressed;
 
-  const QuickPickSongCard({super.key, required this.model});
+  const QuickPickSongCard({
+    Key? key,
+    required this.model,
+    this.onpressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +22,8 @@ class QuickPickSongCard extends StatelessWidget {
       width: context.dynamicWidth(1),
       alignment: Alignment.center,
       child: ListTile(
-        onTap: () {
-          debugPrint("${model.songName} çalınıyor..");
-        },
+        onTap: onpressed,
+        splashColor: ColorConstant.instance.appSplashColor,
         leading: Container(
           height: context.dynamicHeight(0.06),
           width: context.dynamicHeight(0.06),
@@ -65,4 +70,11 @@ class QuickPickSongCard extends StatelessWidget {
       ),
     );
   }
+
+  // Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => PlayerView(
+  //               model: model,
+  //             )));
 }

@@ -1,14 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of '../view/home_view.dart';
 
 class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _CustomSliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
+  final double statusBarHeight;
+  _CustomSliverAppBarDelegate(
+    this.statusBarHeight,
+  );
 
   @override
-  double get minExtent => _tabBar.preferredSize.height;
+  double get minExtent => kBottomNavigationBarHeight;
   @override
-  double get maxExtent => _tabBar.preferredSize.height;
+  double get maxExtent => kBottomNavigationBarHeight;
 
   @override
   Widget build(
@@ -16,11 +18,27 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     final appBarColorTween =
         ColorTween(begin: Colors.transparent, end: Colors.black);
 
-    final relativeScroll = min(shrinkOffset, maxExtent) / minExtent;
+    final appBarColorTweenBottom =
+        ColorTween(begin: Colors.transparent, end: Colors.grey.shade200);
+
+    /// Header Dynamic Background Color And Bottom Color
+    final relativeScroll = min(shrinkOffset, maxExtent) / (minExtent / 1.2);
 
     return Container(
-      color: appBarColorTween.transform(relativeScroll),
-      child: _tabBar,
+      decoration: BoxDecoration(
+          color: appBarColorTween.transform(relativeScroll),
+          border: Border.merge(
+              Border(
+                  bottom: BorderSide(
+                      width: 0.12,
+                      color: appBarColorTweenBottom.transform(relativeScroll) ??
+                          Colors.transparent)),
+              Border(
+                  bottom: BorderSide(
+                      width: 0.00,
+                      color: appBarColorTweenBottom.transform(relativeScroll) ??
+                          Colors.transparent)))),
+      child: const UpChip(),
     );
   }
 

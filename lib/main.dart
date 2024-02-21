@@ -29,6 +29,9 @@ class _MyAppState extends State<MyApp> {
           color: Colors.black,
           iconTheme: IconThemeData(color: Colors.white),
         ),
+        sliderTheme: const SliderThemeData(
+            trackHeight: 1,
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.00)),
         progressIndicatorTheme:
             ProgressIndicatorThemeData(color: Colors.grey.shade300),
         bottomNavigationBarTheme:

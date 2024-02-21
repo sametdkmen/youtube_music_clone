@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends BottomNavigationBar {
-  CustomBottomNavBar({super.key})
+  final BuildContext context;
+
+  CustomBottomNavBar({required this.context, super.key})
       : super(
           backgroundColor: Colors.grey.shade900,
           items: item,

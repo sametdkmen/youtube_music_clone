@@ -1,16 +1,17 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:youtube_music_app/components/other_button.dart';
 import 'package:youtube_music_app/components/song_card.dart';
 import 'package:youtube_music_app/core/extension/context_extension.dart';
+import 'package:youtube_music_app/core/operation/general_operation.dart';
 import 'package:youtube_music_app/features/home/mixin/home_view_mixin.dart';
-import 'package:youtube_music_app/model/categories.dart';
 import 'package:youtube_music_app/model/playlist.dart';
 import 'package:youtube_music_app/model/song.dart';
 import '../../../components/bottom_nav_bar.dart';
 import '../../../components/playlist_card.dart';
 import '../../../components/quick_pick_card.dart';
+import '../../../components/up_chip.dart';
+import '../../../core/constant/application_constant.dart';
 import '../appbar/home_app_bar.dart';
 
 part '../delegate/custom_sliver_app_bar_delegate.dart';
@@ -25,43 +26,42 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView>
     with HomeViewMixin, SingleTickerProviderStateMixin {
   @override
-  @override
   void initState() {
-    tabController =
-        TabController(length: Categories.upCategoryList.length, vsync: this);
-    tabController.addListener(_handleTabSelection);
     pageScrollController.addListener(onScroll);
     super.initState();
-  }
-
-  void _handleTabSelection() {
-    if (!mounted) return;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return SafeArea(
-      child: ValueListenableBuilder<double>(
-        valueListenable: isScrollOpacity,
-        builder: (context, value, child) => Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: const AssetImage('images/logo/gradient_bg.png'),
-              opacity: value,
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-            ),
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+
+    return ValueListenableBuilder<double>(
+      valueListenable: isScrollOpacity,
+      builder: (context, value, child) => Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: const AssetImage('images/logo/bg3.png'),
+            opacity: isScrollOpacity.value,
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
           ),
-          child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: NestedScrollView(
+        ),
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SafeArea(
+              child: NestedScrollView(
                 controller: pageScrollController,
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     /// AppBar - YouTube Logo - Search - TV - Profile
-                    const SliverToBoxAdapter(child: HomeAppBar()),
+                    SliverToBoxAdapter(
+                        child: ValueListenableBuilder<double>(
+                      valueListenable: isScrollOpacity,
+                      builder: (context, value, child) => HomeAppBar(
+                        dynamicOpacity: isScrollOpacity.value,
+                      ),
+                    )),
 
                     /// Category Seçme Bölümü
 
@@ -69,54 +69,19 @@ class _HomeViewState extends State<HomeView>
                     SliverPersistentHeader(
                       pinned: true,
                       floating: true,
-                      delegate: _CustomSliverAppBarDelegate(
-                        TabBar(
-                          controller: tabController,
-                          indicator:
-                              const BoxDecoration(color: Colors.transparent),
-                          dividerColor: Colors.grey.shade600,
-                          dividerHeight: isTop.value ? 0.2 : 0.0,
-                          tabs: List.generate(
-                            Categories.upCategoryList.length,
-                            (index) {
-                              return Tab(
-                                child: Container(
-                                  height: context.dynamicHeight(0.04),
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: tabController.index == index
-                                        ? Colors.white
-                                        : Colors
-                                            .grey, // Seçili tab beyaz, diğerleri şeffaf
-                                    borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: Colors.grey.shade400),
-                                  ),
-                                  child: FittedBox(
-                                    fit: BoxFit.none,
-                                    child: Text(
-                                      Categories.upCategoryList[index].name,
-                                      style: TextStyle(
-                                          color: tabController.index == index
-                                              ? Colors.black
-                                              : Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
+                      delegate: _CustomSliverAppBarDelegate(statusBarHeight),
+                    )
                   ];
                 },
-                body: screenHeight(context, textTheme),
+                body: RefreshIndicator(
+                    onRefresh: GeneralOperation.refreshHome,
+                    color: Colors.black,
+                    child: screenHeight(context, textTheme)),
               ),
-              bottomNavigationBar: CustomBottomNavBar()
-              //ALT DÜĞMELER
-              ),
-        ),
+            ),
+            bottomNavigationBar: CustomBottomNavBar(context: context)
+            //ALT DÜĞMELER
+            ),
       ),
     );
   }
@@ -126,28 +91,38 @@ class _HomeViewState extends State<HomeView>
       );
   Widget get _playRadioWithSong => Padding(
         padding: EdgeInsets.only(
-            left: context.dynamicWidth(.021),
-            top: context.dynamicHeight(.02),
+            left: context.dynamicWidth(.037),
+            right: context.dynamicWidth(.037),
+            top: context.dynamicHeight(.035),
             bottom: context.dynamicHeight(.02)),
-        child: const Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
-          direction: Axis.vertical,
-          spacing: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "BİR ŞARKIDAN RADYO BAŞLATIN",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white54,
-                  fontWeight: FontWeight.w400),
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              direction: Axis.vertical,
+              spacing: 1,
+              children: [
+                Text(
+                  ApplicationConstant.instance.startRadioFromSongTxt,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white54,
+                      fontWeight: FontWeight.w400),
+                ),
+                Text(
+                  ApplicationConstant.instance.fastSectionsTxt,
+                  style: const TextStyle(
+                      fontSize: 25,
+                      fontFamily: "YoutubeSansSemibold",
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+              ],
             ),
-            Text(
-              "Hızlı seçimler",
-              style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: "YoutubeSansSemibold",
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
+            OtherButton(
+              buttonTxt: "Tümünü oynat",
+              onTap: () {},
             ),
           ],
         ),
@@ -155,7 +130,8 @@ class _HomeViewState extends State<HomeView>
 
   Widget _defaultTitle(String txt) => Padding(
         padding: EdgeInsets.only(
-            left: context.dynamicWidth(.021),
+            left: context.dynamicWidth(.037),
+            right: context.dynamicWidth(.037),
             bottom: context.dynamicHeight(.02)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,7 +144,7 @@ class _HomeViewState extends State<HomeView>
                   fontFamily: "YoutubeSansSemibold",
                   fontWeight: FontWeight.w700),
             ),
-            const OtherButton(),
+            OtherButton(onTap: () {}),
           ],
         ),
       );
@@ -196,7 +172,11 @@ class _HomeViewState extends State<HomeView>
                     physics: const BouncingScrollPhysics(),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, indeks) {
-                      return QuickPickSongCard(model: snapshot.data![indeks]);
+                      return QuickPickSongCard(
+                        model: snapshot.data![indeks],
+                        onpressed: () =>
+                            playerShowBottomSheet(snapshot.data![indeks]),
+                      );
                     },
                   );
                 } else {
@@ -208,7 +188,8 @@ class _HomeViewState extends State<HomeView>
             ),
           ), // HIZLI SEÇİMLER * MÜZİKLER
           _sectionSpace,
-          _defaultTitle("Yeniden dinleyin"), // YENİDEN DİNLEYİN - DİĞER BUTONU
+          _defaultTitle(ApplicationConstant
+              .instance.repeatListeningTxt), // YENİDEN DİNLEYİN - DİĞER BUTONU
           SizedBox(
             height: context.dynamicHeight(.34),
             child: FutureBuilder<List<Song>>(
@@ -229,6 +210,8 @@ class _HomeViewState extends State<HomeView>
                     itemBuilder: (context, indeks) {
                       return SongCard(
                         model: snapshot.data![indeks],
+                        onpressed: () =>
+                            playerShowBottomSheet(snapshot.data![indeks]),
                       );
                     },
                   );
@@ -241,8 +224,8 @@ class _HomeViewState extends State<HomeView>
             ),
           ), // MÜZİKLER
           _sectionSpace,
-          _defaultTitle(
-              "Sizin için derlenenler"), // SİZİN İÇİN DERLENENLER - DİĞER BUTONU
+          _defaultTitle(ApplicationConstant.instance
+              .compiledForYouTxt), // SİZİN İÇİN DERLENENLER - DİĞER BUTONU
           SizedBox(
             height: context.dynamicHeight(.3),
             child: FutureBuilder<List<PlayList>>(

@@ -1,4 +1,4 @@
-package com.example.youtube_music_app
+package com.example.youtube_music_clone
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Buton2 extends StatelessWidget {
-  const Buton2({super.key});
+/// Small outlined "Diğer" (More) button placed next to section titles.
+class MoreButton extends StatelessWidget {
+  const MoreButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +18,19 @@ class Buton2 extends StatelessWidget {
             color: Colors.grey.withAlpha(100),
           ),
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-        ),
-        child: const Text("Diğer",
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              height: 0.93,
-              fontWeight: FontWeight.bold,
-              fontFamily: "YoutubeSansRegular"
+            borderRadius: BorderRadius.all(Radius.circular(50)),
           ),
-          overflow: TextOverflow.visible, //yazıyı kesilmeden gösterdik.
+        ),
+        child: const Text(
+          "Diğer",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 11,
+            height: 0.93,
+            fontWeight: FontWeight.bold,
+            fontFamily: "YoutubeSansRegular",
+          ),
+          overflow: TextOverflow.visible,
         ),
       ),
     );

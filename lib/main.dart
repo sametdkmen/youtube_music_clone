@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_music_app/splash_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:youtube_music_clone/ui/screens/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -8,26 +8,19 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(MyApp());
+  runApp(const YoutubeMusicCloneApp());
 }
 
-class MyApp extends StatefulWidget {
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class YoutubeMusicCloneApp extends StatelessWidget {
+  const YoutubeMusicCloneApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Youtube Music App',
+      title: 'YouTube Music Clone',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: SplashScreen(),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const SplashScreen(),
     );
   }
 }

@@ -12,6 +12,7 @@ class MoreButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {},
         style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
           side: BorderSide(
             width: 0.8,
@@ -21,16 +22,19 @@ class MoreButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(50)),
           ),
         ),
-        child: const Text(
-          "Diğer",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 11,
-            height: 0.93,
-            fontWeight: FontWeight.bold,
-            fontFamily: "YoutubeSansRegular",
+        child: const FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            "Diğer",
+            maxLines: 1,
+            softWrap: false,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              fontFamily: "YoutubeSansRegular",
+            ),
           ),
-          overflow: TextOverflow.visible,
         ),
       ),
     );

@@ -5,6 +5,12 @@ eden bir arayüz çalışmasıdır. Amaç, karmaşık bir ticari uygulamanın ek
 Flutter widget ağacıyla yeniden kurmak ve farklı ekran boyutlarına uyumlu bir
 yerleşim elde etmektir.
 
+## Ekran görüntüleri
+
+| Açılış ekranı | Ana ekran | Ana ekran (kaydırılmış) |
+| --- | --- | --- |
+| ![Açılış ekranı](docs/screenshots/splash.png) | ![Ana ekran](docs/screenshots/home.png) | ![Ana ekran, kaydırılmış](docs/screenshots/home_scrolled.png) |
+
 ## Ekranlar
 
 - **Açılış ekranı:** Siyah zemin üzerinde YouTube Music logosu; 2 saniye sonra

@@ -1,5 +1,5 @@
 name: youtube_music_clone
-description: A YouTube Music home screen UI clone built with Flutter.
+description: A YouTube Music UI clone (home + player) built with Flutter.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -24,6 +24,7 @@ flutter:
     - assets/images/
     - assets/images/logo/
     - assets/images/covers/
+    - assets/images/profile/
 
   fonts:
     - family: YoutubeSansDark

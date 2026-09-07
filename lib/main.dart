@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_music_clone/features/splash/view/splash_view.dart';
 import 'package:flutter/services.dart';
-import 'package:youtube_music_clone/ui/screens/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +19,21 @@ class YoutubeMusicCloneApp extends StatelessWidget {
     return MaterialApp(
       title: 'YouTube Music Clone',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const SplashScreen(),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.black,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        sliderTheme: const SliderThemeData(
+            trackHeight: 1,
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.00)),
+        progressIndicatorTheme:
+            ProgressIndicatorThemeData(color: Colors.grey.shade300),
+        bottomNavigationBarTheme:
+            const BottomNavigationBarThemeData(backgroundColor: Colors.black),
+        bottomAppBarTheme: const BottomAppBarThemeData(color: Colors.black),
+      ),
+      home: const SplashView(),
     );
   }
 }
